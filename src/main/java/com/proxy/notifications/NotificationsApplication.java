@@ -88,6 +88,7 @@ public class NotificationsApplication {
 				ini.put("Database", "dialect","");
 				ini.put("Database", "show-sql","");
 				ini.put("Database", "ddl-auto","");
+				ini.put("Server", "port","");
 				ini.store();
 			} catch (NullPointerException e1) {
 				// TODO Auto-generated catch block

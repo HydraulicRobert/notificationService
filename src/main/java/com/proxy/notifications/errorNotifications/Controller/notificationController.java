@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proxy.notifications.errorNotifications.entity.notification;
@@ -37,48 +38,79 @@ public class notificationController {
 			tmpAllNotifications.add(curNotification);
 		}
 		return tmpAllNotifications;
-	}
+	} 
 	
 	@GetMapping("/set")
 	public boolean checkSettingsTimestampEqualsCache() 
 	{
-		String tmpString = cacheMgr.getCache("settingsTimestamp").get("normalKey", String.class);
-		settings setting = sttCtr.findTop1();
-		if ((tmpString == null))
+		if (cacheMgr.getCache("sqlChkSet").get("normalKey",Boolean.class) == null)
 		{
-			tmpString = "placeholder";
-			System.out.println("settings timestamp is null. placeholder added: "+tmpString);
+			cacheMgr.getCache("sqlChkSet").put("normalKey",false);
 		}
-		if (!tmpString.equals(setting.getLastChangeOn()))
+		boolean bolChkSet = (cacheMgr.getCache("sqlChkSet").get("normalKey",Boolean.class));
+		String strCacheString = cacheMgr.getCache("settingsTimestamp").get("normalKey", String.class);
+		String strSQLDate = "";
+		if (bolChkSet == false)
 		{
-			System.out.println(setting.getLastChangeOn()+" has been put into cache. doesn not equal "+tmpString);
-			tmpString = setting.getLastChangeOn();
-			cacheMgr.getCache("settingsTimestamp").put("normalKey",tmpString);
+			bolChkSet = true;
+			cacheMgr.getCache("sqlChkSet").put("normalKey",bolChkSet);
+			strSQLDate = sttCtr.findTop1().getLastChangeOn();
+			bolChkSet = false;
+			cacheMgr.getCache("sqlChkSet").put("normalKey",bolChkSet);
+		}
+		if ((strCacheString == null))
+		{
+			strCacheString = "placeholder";
+			System.out.println("settings timestamp is null. placeholder added: "+strCacheString);
+		}
+		if (!strCacheString.equals(strSQLDate))
+		{
+			System.out.println(strSQLDate+" S has been put into cache. doesn not equal "+strCacheString);
+			strCacheString = strSQLDate;
+			cacheMgr.getCache("settingsTimestamp").put("normalKey",strCacheString);
 			return false;
+		}else 
+		{
+			System.out.println(strSQLDate+" S has not been put into cache. does equal "+strCacheString);
 		}
-		System.out.println(setting.getLastChangeOn()+" S has not been put into cache. does equal "+tmpString);
 		return true;
 	}
 	@GetMapping("/notTop1")
 	public boolean checkMostCurrentNotificationTimestampEqualsCache() 
 	{
-		String tmpString = cacheMgr.getCache("mostCurrentNotificationTimestamp").get("normalKey", String.class);
-		notification mostCurrent = notRep.findTop1ByOrderByStartDateDesc();
-		if (tmpString == null)
+		if (cacheMgr.getCache("sqlChkNotTop1").get("normalKey",Boolean.class) == null)
 		{
-			tmpString = "placeholder";
-			System.out.println("notification timestamp is null. placeholder added: "+tmpString);
+			cacheMgr.getCache("sqlChkNotTop1").put("normalKey",false);
+			System.out.println("cache top 1 boolean null. set to false");
 		}
-		if (!tmpString.equals(mostCurrent.getStartDate()))
+		boolean bolChkNotTop1 = cacheMgr.getCache("sqlChkNotTop1").get("normalKey",Boolean.class);
+		String strCacheString = cacheMgr.getCache("mostCurrentNotificationTimestamp").get("normalKey", String.class);
+		String strSQLDate = "";
+		if (bolChkNotTop1 == false)
 		{
-			System.out.println(mostCurrent.getStartDate()+" N1 has been put into cache. doesn not equal "+tmpString);
-			tmpString = mostCurrent.getStartDate();
+			bolChkNotTop1 = true;
+			cacheMgr.getCache("sqlChkSet").put("normalKey",bolChkNotTop1);
+			strSQLDate = notRep.findTop1ByOrderByStartDateDesc().getStartDate();
+			bolChkNotTop1 = false;
+			cacheMgr.getCache("sqlChkSet").put("normalKey",bolChkNotTop1);
+		}
+		if (strCacheString == null)
+		{
+			strCacheString = "placeholder";
+			System.out.println("notification timestamp is null. placeholder added: "+strCacheString);
+		}
+		if (!strCacheString.equals(strSQLDate))
+		{
+			System.out.println(strSQLDate+" N1 has been put into cache. doesn not equal "+strCacheString);
+			strCacheString = strSQLDate;
 			//System.out.println("unequal settings dates. putting new into cache");
-			cacheMgr.getCache("mostCurrentNotificationTimestamp").put("normalKey",tmpString);
+			cacheMgr.getCache("mostCurrentNotificationTimestamp").put("normalKey",strCacheString);
 			//System.out.println("settings timestamp is: "+tmpString);
 			return false;
+		}else
+		{
+			System.out.println(strSQLDate+" N1 has not been put into cache. does equal "+strCacheString);
 		}
-		System.out.println(mostCurrent.getStartDate()+" has not been put into cache. does equal "+tmpString);
 		//checkTimestampBigger6();
 //		System.out.println(System.getProperty("user.dir"));
 		return true;
@@ -89,14 +121,31 @@ public class notificationController {
 		return cacheMgr.getCache("notificationList").get("normalKey", ArrayList.class);
 	}
 	@GetMapping("/notAll")
-	public List<notification> getNotifications() 
+	public List<notification> getNotifications(@RequestHeader("username") String username) 
 	{
+		System.out.println("request user is: '"+username+"'");
+		if (cacheMgr.getCache("sqlChkNotAllTop").get("normalKey",Boolean.class) == null)
+		{
+			cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",false);
+			System.out.println("cache all Not top boolean null. set to false");
+		}
+		if (cacheMgr.getCache("sqlChkNotAllBottom").get("normalKey",Boolean.class) == null)
+		{
+			cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",false);
+			System.out.println("cache all Not bottom boolean null. set to false");
+		}
+		boolean bolChkNotAllTop = cacheMgr.getCache("sqlChkNotAllTop").get("normalKey",Boolean.class);
+		boolean bolChkNotAllBottom = cacheMgr.getCache("sqlChkNotAllBottom").get("normalKey",Boolean.class);
 		Iterable<notification> iterNotification;
 		List<notification> allNotifications = cacheMgr.getCache("notificationList").get("normalKey", ArrayList.class);
-		if (allNotifications == null) {
+		if ((allNotifications == null) && (!bolChkNotAllTop)) {
+			bolChkNotAllTop = true;
+			cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",bolChkNotAllTop);
 			iterNotification = notRep.findAllByOrderByStartDateDesc();
 			allNotifications = iteratorToListNotification(iterNotification,allNotifications);
 			cacheMgr.getCache("notificationList").put("normalKey", allNotifications);
+			bolChkNotAllTop = false;
+			cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",bolChkNotAllTop);
 		}else {
 			allNotifications = cacheMgr.getCache("notificationList").get("normalKey", ArrayList.class);
 		}
@@ -106,13 +155,17 @@ public class notificationController {
 			if(!checkSettingsTimestampEqualsCache())
 			{
 				System.out.println("cache settings not equal db");
-				if(!checkMostCurrentNotificationTimestampEqualsCache())
+				if((!checkMostCurrentNotificationTimestampEqualsCache()) && (!bolChkNotAllBottom))
 				{
+					bolChkNotAllBottom = true;
+					cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",bolChkNotAllTop);
 					System.out.println("cache noti not equal db");
 					iterNotification = notRep.findAllByOrderByStartDateDesc();
 					//allNotifications.clear();
 					allNotifications = iteratorToListNotification(iterNotification,allNotifications);
 					cacheMgr.getCache("notificationList").put("normalKey", allNotifications);
+					bolChkNotAllBottom = false;
+					cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",bolChkNotAllTop);
 				}
 			}
 		}
