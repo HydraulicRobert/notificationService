@@ -25,7 +25,16 @@ public class websecurityConfig {
 	public CacheManager cacheManager() {
 		ConcurrentMapCacheManager manager = new ConcurrentMapCacheManager();
 		manager.setAllowNullValues(false);
-		manager.setCacheNames(Arrays.asList("sqlChkNotAllTop","sqlChkNotAllBottom","sqlChkNotTop1","sqlChkSet","sqlChk6Sec","notificationList","sixSecondTimestamp","settingsTimestamp","mostCurrentNotificationTimestamp"));
+		manager.setCacheNames(Arrays.asList("sqlChkNotAllTop",
+											"sqlChkNotAllBottom",
+											"sqlChkNotTop1",
+											"sqlChkSet",
+											"sqlChk6Sec",
+											"notificationList",
+											"sixSecondTimestamp",
+											"settingsTimestamp",
+											"mostCurrentNotificationTimestamp",
+											"userList"));
 		return manager;
 	}
 }
