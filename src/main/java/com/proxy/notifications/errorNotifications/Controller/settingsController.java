@@ -19,7 +19,7 @@ public class settingsController {
 	@Autowired
 	CacheManager cacheMgr;
 	public settings findTop1() {
-		return sttRep.findTop1ByOrderByLastChangeOnDesc();
+		return sttRep.findTop1By();
 	}
 	public Iterable<settings> findAll() {
 		//cacheMgr.getCache("settingsList").put("normalKey", sttRep.findAll()); 

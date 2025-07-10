@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -177,5 +179,10 @@ public class cfgInputOutput {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public static void log(LocalDateTime datetime, int severity, String message)
+	{
+		DateTimeFormatter datetimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		System.out.println(datetime.format(datetimeFormat)+";"+severity+";"+message);
 	}
 }

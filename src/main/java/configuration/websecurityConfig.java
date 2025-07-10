@@ -34,6 +34,7 @@ public class websecurityConfig {
 											"sixSecondTimestamp",
 											"settingsTimestamp",
 											"mostCurrentNotificationTimestamp",
+											"mostCurrentNotificationTimestampAll",
 											"userList"));
 		return manager;
 	}
