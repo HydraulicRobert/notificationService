@@ -246,6 +246,9 @@ public class notificationController {
 		if (checkUserListExistsCache())
 		{
 			List<String[]> stlUserList = cacheMgr.getCache("userList").get("normalKey",ArrayList.class);
+			if (stlUserList == null) {
+				return false;
+			}
 			String[] strUserList; 
 			for(int i = 0;i<stlUserList.size();i++)
 			{
