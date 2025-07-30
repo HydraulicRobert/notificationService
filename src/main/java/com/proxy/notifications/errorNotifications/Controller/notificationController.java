@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proxy.notifications.configuration.cfgInputOutput;
 import com.proxy.notifications.errorNotifications.entity.notification;
 import com.proxy.notifications.errorNotifications.entity.settings;
 import com.proxy.notifications.errorNotifications.repository.notificationRepository;
 
-import configuration.cfgInputOutput;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -53,11 +53,11 @@ public class notificationController {
 	public String checkSettingsTimestampEqualsCache(@RequestHeader(value = "username", required = false) String strUsername, @RequestHeader(value = "password", required = false) String strPassword) 
 	{
 		
-		if ((strUsername == null) ||(strPassword == null)) {
+		/*if ((strUsername == null) ||(strPassword == null)) {
 			return null;
 		}
 		if (checkUserExistsCache(strUsername, strPassword))
-		{
+		{*/
 			if(checkTimestampBigger6())
 			{
 				if (cacheMgr.getCache("sqlChkSet").get("normalKey",Boolean.class) == null)
@@ -91,19 +91,19 @@ public class notificationController {
 				}
 			}
 			return cacheMgr.getCache("settingsTimestamp").get("normalKey", String.class);
-		}else
+		/*}else
 		{
 			return null;
-		}
+		}*/
 	}
 	@GetMapping("/notTop1")
 	public String checkMostCurrentNotificationTimestampEqualsCache(@RequestHeader(value = "username", required = false) String strUsername, @RequestHeader(value = "password", required = false) String strPassword) 
 	{
-		if ((strUsername == null) ||(strPassword == null)) {
+		/*if ((strUsername == null) ||(strPassword == null)) {
 			return null;
 		}
 		if (checkUserExistsCache(strUsername, strPassword))
-		{
+		{*/
 			if (cacheMgr.getCache("sqlChkNotTop1").get("normalKey",Boolean.class) == null)
 			{
 				cacheMgr.getCache("sqlChkNotTop1").put("normalKey",false);
@@ -139,24 +139,29 @@ public class notificationController {
 			//checkTimestampBigger6();
 	//		System.out.println(System.getProperty("user.dir"));
 			return cacheMgr.getCache("mostCurrentNotificationTimestamp").get("normalKey", String.class);
-		}else
+		/*}else
 		{
 			return null;
-		}
+		}*/
 	}
 	@GetMapping("/notFin")
 	public List<notification> getNotificationsWhenFinished()
 	{
 		return cacheMgr.getCache("notificationList").get("normalKey", ArrayList.class);
 	}
+	@GetMapping("/string")
+	public String getString()
+	{
+		return "hello";
+	}
 	@GetMapping("/notAll")
 	public List<notification> getNotifications(@RequestHeader(value = "username", required = false) String strUsername, @RequestHeader(value = "password", required = false) String strPassword) 
 	{
-		if ((strUsername == null) ||(strPassword == null)) {
+		/*if ((strUsername == null) ||(strPassword == null)) {
 			return null;
 		}
 		if (checkUserExistsCache(strUsername, strPassword))
-		{
+		{*/
 			if (cacheMgr.getCache("sqlChkNotAllTop").get("normalKey",Boolean.class) == null)
 			{
 				cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",false);
@@ -201,9 +206,9 @@ public class notificationController {
 				cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",bolChkNotAllTop);
 			}
 			return allNotifications;
-		}else {
+		/*}else {
 			return null;
-		}
+		}*/
 	}
 	@GetMapping("/chk6")
 	public boolean checkTimestampBigger6() 

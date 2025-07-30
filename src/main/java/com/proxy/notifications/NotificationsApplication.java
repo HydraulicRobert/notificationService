@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import org.ini4j.Ini;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -16,15 +17,17 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
-import org.apache.commons.logging.LogFactory;
 
-import configuration.cfgInputOutput;
-import configuration.websecurityConfig;
+import com.proxy.notifications.configuration.cfgInputOutput;
+import com.proxy.notifications.configuration.websecurityConfig;
+
+import org.apache.commons.logging.LogFactory;
 
 //@EnableJpaRepositories(basePackages = 
 //{"com.proxy.notifications"})
-@SpringBootApplication(scanBasePackages={"com.proxy.notifications"},
-		exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages={"com.proxy.notifications"}
+		,exclude = {SecurityAutoConfiguration.class}
+)
 @AutoConfigureBefore(CacheAutoConfiguration.class)
 @EnableCaching
 public class NotificationsApplication {
@@ -36,6 +39,7 @@ public class NotificationsApplication {
 		if (args.length <= 0) {
 			new SpringApplicationBuilder(NotificationsApplication.class)
 	        .properties(CfgInputOutput.props())
+	        .web(WebApplicationType.SERVLET)
 	        .build()
 	        .run(args);
 		}else

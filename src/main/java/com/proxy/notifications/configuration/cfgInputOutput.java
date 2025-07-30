@@ -1,4 +1,4 @@
-package configuration;
+package com.proxy.notifications.configuration;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
