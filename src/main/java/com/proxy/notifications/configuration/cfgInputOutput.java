@@ -71,6 +71,8 @@ public class cfgInputOutput {
 			ini.put("Database", "show-sql","");
 			ini.put("Database", "ddl-auto","");
 			ini.put("Server", "port","");
+			ini.put("Server", "logLevel","");
+			ini.put("Server", "showSQLQueries","");
 			ini.store();
 			return true;
 		} catch (NullPointerException e1) {
@@ -102,7 +104,11 @@ public class cfgInputOutput {
 			properties.setProperty("spring.jpa.show-sql",ini.get("Database","show-sql"));
 			properties.setProperty("spring.jpa.hibernate.ddl-auto",ini.get("Database","ddl-auto"));
 			properties.setProperty("server.port",ini.get("Server","port"));
-					
+			properties.setProperty("logging.level.root",ini.get("Server","logLevel"));
+			properties.setProperty("logging.level.org.springframework.web",ini.get("Server","logLevel"));
+			properties.setProperty("logging.level.org.hibernate",ini.get("Server","logLevel"));
+			properties.setProperty("spring.jpa.show-sql",ini.get("Server","showSQLQueries"));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("configuration/vsystem.ini not found or incomplete.");

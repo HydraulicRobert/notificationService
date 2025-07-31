@@ -1,12 +1,14 @@
 package com.proxy.notifications;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.io.File;
 import java.nio.file.Paths;
 
 import org.ini4j.Ini;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -56,7 +58,10 @@ public class NotificationsApplication {
 		}else 
 		if (args[0].trim().equals("--get")||
 			args[0].trim().equals("-g") ){
-			cfgInputOutput.getUserList(strCfgPath, strFileName);
+			List<String[]> userList = cfgInputOutput.getUserList(strCfgPath, strFileName);
+			for (int i = 0; i<userList.size();i++) {
+				System.out.println("user: '"+userList.get(i)[0]+"'; Password: '"+userList.get(i)[1]+"';");
+			}
 		}
 			
 		

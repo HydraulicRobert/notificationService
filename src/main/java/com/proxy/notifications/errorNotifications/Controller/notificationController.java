@@ -78,16 +78,16 @@ public class notificationController {
 				if ((strCacheString == null))
 				{
 					strCacheString = "placeholder";
-					cfgInputOutput.log(LocalDateTime.now(), 0, "settings timestamp is null. placeholder added: "+strCacheString);
+					//cfgInputOutput.log(LocalDateTime.now(), 0, "settings timestamp is null. placeholder added: "+strCacheString);
 				}
 				if (!strCacheString.equals(strSQLDate))
 				{
-					cfgInputOutput.log(LocalDateTime.now(), 0, strSQLDate+" S has been put into cache. doesn not equal "+strCacheString);
+					//cfgInputOutput.log(LocalDateTime.now(), 0, strSQLDate+" S has been put into cache. doesn not equal "+strCacheString);
 					strCacheString = strSQLDate;
 					cacheMgr.getCache("settingsTimestamp").put("normalKey",strCacheString);
 				}else 
 				{
-					cfgInputOutput.log(LocalDateTime.now(), 0, strSQLDate+" S has not been put into cache. does equal "+strCacheString);
+					//cfgInputOutput.log(LocalDateTime.now(), 0, strSQLDate+" S has not been put into cache. does equal "+strCacheString);
 				}
 			}
 			return cacheMgr.getCache("settingsTimestamp").get("normalKey", String.class);
@@ -107,7 +107,7 @@ public class notificationController {
 			if (cacheMgr.getCache("sqlChkNotTop1").get("normalKey",Boolean.class) == null)
 			{
 				cacheMgr.getCache("sqlChkNotTop1").put("normalKey",false);
-				cfgInputOutput.log(LocalDateTime.now(), 0, "cache top 1 boolean null. set to false");				
+				//cfgInputOutput.log(LocalDateTime.now(), 0, "cache top 1 boolean null. set to false");				
 			}
 			boolean bolChkNotTop1 = cacheMgr.getCache("sqlChkNotTop1").get("normalKey",Boolean.class);
 			String strCacheString = cacheMgr.getCache("mostCurrentNotificationTimestamp").get("normalKey", String.class);
@@ -123,18 +123,18 @@ public class notificationController {
 			if (strCacheString == null)
 			{
 				strCacheString = "placeholder";
-				System.out.println("notification timestamp is null. placeholder added: "+strCacheString);
+				//System.out.println("notification timestamp is null. placeholder added: "+strCacheString);
 			}
 			if (!strCacheString.equals(strSQLDate))
 			{
-				cfgInputOutput.log(LocalDateTime.now(), 0,strSQLDate+" N1 has been put into cache. doesn not equal "+strCacheString);				
+				//cfgInputOutput.log(LocalDateTime.now(), 0,strSQLDate+" N1 has been put into cache. doesn not equal "+strCacheString);				
 				strCacheString = strSQLDate;
 				//System.out.println("unequal settings dates. putting new into cache");
 				cacheMgr.getCache("mostCurrentNotificationTimestamp").put("normalKey",strCacheString);
 				//System.out.println("settings timestamp is: "+tmpString);
 			}else
 			{
-				cfgInputOutput.log(LocalDateTime.now(), 0,strSQLDate+" N1 has not been put into cache. does equal "+strCacheString);				
+				//cfgInputOutput.log(LocalDateTime.now(), 0,strSQLDate+" N1 has not been put into cache. does equal "+strCacheString);				
 			}
 			//checkTimestampBigger6();
 	//		System.out.println(System.getProperty("user.dir"));
@@ -165,19 +165,19 @@ public class notificationController {
 			if (cacheMgr.getCache("sqlChkNotAllTop").get("normalKey",Boolean.class) == null)
 			{
 				cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",false);
-				cfgInputOutput.log(LocalDateTime.now(), 0,"cache all Not top boolean null. set to false");				
+				//cfgInputOutput.log(LocalDateTime.now(), 0,"cache all Not top boolean null. set to false");				
 			}
 			if (cacheMgr.getCache("sqlChkNotAllBottom").get("normalKey",Boolean.class) == null)
 			{
 				cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",false);
-				cfgInputOutput.log(LocalDateTime.now(), 0,"cache all Not bottom boolean null. set to false");
+				//cfgInputOutput.log(LocalDateTime.now(), 0,"cache all Not bottom boolean null. set to false");
 			}
 			boolean bolChkNotAllTop = cacheMgr.getCache("sqlChkNotAllTop").get("normalKey",Boolean.class);
 			boolean bolChkNotAllBottom = cacheMgr.getCache("sqlChkNotAllBottom").get("normalKey",Boolean.class);
 			Iterable<notification> iterNotification;
 			List<notification> allNotifications = cacheMgr.getCache("notificationList").get("normalKey", ArrayList.class);
 			if ((allNotifications == null) && (!bolChkNotAllTop)) {
-				System.out.println("nots null. filling");
+				//System.out.println("nots null. filling");
 				bolChkNotAllTop = true;
 				cacheMgr.getCache("sqlChkNotAllTop").put("normalKey",bolChkNotAllTop);
 				iterNotification = notRep.findAllByOrderByStartDateDesc();
@@ -197,7 +197,7 @@ public class notificationController {
 				cacheMgr.getCache("mostCurrentNotificationTimestampAll").put("normalKey", strMostCurr);
 				bolChkNotAllBottom = true;
 				cacheMgr.getCache("sqlChkNotAllBottom").put("normalKey",bolChkNotAllTop);
-				cfgInputOutput.log(LocalDateTime.now(), 0,"cache noti not equal db");
+				//cfgInputOutput.log(LocalDateTime.now(), 0,"cache noti not equal db");
 				iterNotification = notRep.findAllByOrderByStartDateDesc();
 				//allNotifications.clear();
 				allNotifications = iteratorToListNotification(iterNotification,allNotifications);
@@ -226,7 +226,7 @@ public class notificationController {
 		if (i >= 6) {
 			cacheMgr.getCache("sixSecondTimestamp").clear();
 			cacheMgr.getCache("sixSecondTimestamp").put("longValue", System.currentTimeMillis()/1000L);
-			cfgInputOutput.log(LocalDateTime.now(), 0,"refresh timestamp refreshed");
+			//cfgInputOutput.log(LocalDateTime.now(), 0,"refresh timestamp refreshed");
 			//System.out.println(cacheMgr.getCache("sixSecondTimestamp").get("longValue", Long.class));
 			return true;
 		}
@@ -263,7 +263,7 @@ public class notificationController {
 					
 					if (BCrypt.checkpw(password, strUserList[1]))
 					{
-						cfgInputOutput.log(LocalDateTime.now(), 0,"successful login detected");
+						//cfgInputOutput.log(LocalDateTime.now(), 0,"successful login detected");
 						return true;
 					}
 					//return true;
@@ -271,7 +271,7 @@ public class notificationController {
 			}
 		}else
 		{
-			cfgInputOutput.log(LocalDateTime.now(), 0,"bad login detected");
+			//cfgInputOutput.log(LocalDateTime.now(), 0,"bad login detected");
 		}
 		return false;
 	}
