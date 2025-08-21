@@ -35,12 +35,13 @@ import org.apache.commons.logging.LogFactory;
 public class NotificationsApplication {
 	
 	public static void main(String[] args) {
-		cfgInputOutput CfgInputOutput = new cfgInputOutput();
+		//cfgInputOutput CfgInputOutput = new cfgInputOutput();
 		String strCfgPath = Paths.get(System.getProperty("user.dir"),"configuration").toString();
 		String strFileName = "userlist.csv";
+		cfgInputOutput.createFile(strCfgPath, strFileName);
 		if (args.length <= 0) {
 			new SpringApplicationBuilder(NotificationsApplication.class)
-	        .properties(CfgInputOutput.props())
+	        .properties(cfgInputOutput.props())
 	        .web(WebApplicationType.SERVLET)
 	        .build()
 	        .run(args);
@@ -48,13 +49,13 @@ public class NotificationsApplication {
 		if (args[0].trim().equals("--add") ||
 			args[0].trim().equals("-a") )
 		{
-			if (!CfgInputOutput.createFile(strCfgPath, strFileName))
+			if (!cfgInputOutput.createFile(strCfgPath, strFileName))
 			{
 				System.out.println("userlist not created");
 			}else {
 				System.out.println("userlist created");
 			}
-			CfgInputOutput.addUserFile(args[1],args[2],strCfgPath,strFileName);
+			cfgInputOutput.addUserFile(args[1],args[2],strCfgPath,strFileName);
 		}else 
 		if (args[0].trim().equals("--get")||
 			args[0].trim().equals("-g") ){
@@ -63,6 +64,7 @@ public class NotificationsApplication {
 				System.out.println("user: '"+userList.get(i)[0]+"'; Password: '"+userList.get(i)[1]+"';");
 			}
 		}
+		//cfgInputOutput.exitApp();
 			
 		
 	}

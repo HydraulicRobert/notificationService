@@ -222,7 +222,7 @@ public class notificationController {
 			lngTmp = System.currentTimeMillis()/1000L;
 		}
 		long i = System.currentTimeMillis()/1000L-lngTmp;
-		cfgInputOutput.log(LocalDateTime.now(), 0,"checkTimestampSmallerthan "+i);
+		//cfgInputOutput.log(LocalDateTime.now(), 0,"checkTimestampSmallerthan "+i);
 		if (i >= 6) {
 			cacheMgr.getCache("sixSecondTimestamp").clear();
 			cacheMgr.getCache("sixSecondTimestamp").put("longValue", System.currentTimeMillis()/1000L);

@@ -1,4 +1,5 @@
 package com.proxy.notifications.errorNotifications.repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import com.proxy.notifications.errorNotifications.entity.notification;
 
 @Repository
 @Component
-public interface notificationRepository extends CrudRepository<notification, Long> {
+public interface notificationRepository extends JpaRepository<notification, Long> {
 	
 	//notifications findByID();
 	Iterable<notification> findAllByOrderByStartDateDesc();

@@ -17,13 +17,19 @@ import java.util.Properties;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class cfgInputOutput {
 	
-	public boolean createFile(String strPath, String strFilename) {
+	public static boolean createFile(String strPath, String strFilename) {
 		String strCfgPath = strPath.toString();
 		String strUserListPath = strFilename;
 		File checkExists = new File(strCfgPath);
@@ -88,11 +94,11 @@ public class cfgInputOutput {
 			return false;
 		}
 	}
-	public void exitApp() {
+	public static void exitApp() {
 		System.out.println("closing app");
 		System.exit(0);
 	}
-	public Properties props() {
+	public static Properties props() {
 	    Properties properties = new Properties();
 		try {
 			Ini ini = new Ini(new File("configuration/vsystem.ini"));
@@ -123,7 +129,7 @@ public class cfgInputOutput {
 	    return properties;
 	  }
 	
-	public boolean addUserFile(String username, String password, String strCfgPath, String strFileName) {
+	public static boolean addUserFile(String username, String password, String strCfgPath, String strFileName) {
 		String strFilePath = Paths.get(strCfgPath, strFileName).toString(); 			
 		try {
 			if(!existsUserFile(username, password, strCfgPath, strFileName))
@@ -133,7 +139,12 @@ public class cfgInputOutput {
 			    bw.write(username+";"+BCrypt.hashpw(password,BCrypt.gensalt(12)));
 			    bw.newLine();
 			    bw.close();
+			    System.out.println("user added");
 			    return true;
+			}else {
+
+			    System.out.println("user not added");
+			    return false;
 			}
 		}catch(IOException E) {
 
@@ -141,7 +152,7 @@ public class cfgInputOutput {
 		}
 		return false;
 	}
-	public boolean existsUserFile(String username, String password, String strCfgPath, String strFileName) {
+	public static boolean existsUserFile(String username, String password, String strCfgPath, String strFileName) {
 		String strFilePath = Paths.get(strCfgPath, strFileName).toString(); 
 		try {
 			FileReader FR = new FileReader(strFilePath);
@@ -184,9 +195,22 @@ public class cfgInputOutput {
 		}
 		return null;
 	}
-	public static void log(LocalDateTime datetime, int severity, String message)
+	/*public static void log(LocalDateTime datetime, int severity, String message)
 	{
 		DateTimeFormatter datetimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		System.out.println(datetime.format(datetimeFormat)+";"+severity+";"+message);
+	}*/
+	public static void logRequests(
+			HttpServletRequest request,
+			Authentication authentication
+			) throws ServletException, IOException {
+		String strMMethod = request.getMethod();
+		String strMUri = request.getRequestURI();
+		String strMQuery = request.getQueryString();
+		String strMName = !authentication.getName().isEmpty() ? authentication.getName():"unknown";
+		String strMIp = request.getRemoteAddr();
+		String strMAuthenticated = authentication.isAuthenticated()?"authenticated":"unauthenticated";
+		DateTimeFormatter datetimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		System.out.println(LocalDateTime.now().format(datetimeFormat)+";"+strMIp+";"+strMMethod+";"+strMUri+";"+strMName+";"+strMAuthenticated);
 	}
 }
