@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -101,7 +102,14 @@ public class cfgInputOutput {
 	public static Properties props() {
 	    Properties properties = new Properties();
 		try {
-			Ini ini = new Ini(new File("configuration/vsystem.ini"));
+			Ini ini = new Ini(
+						new File(
+							Paths.get(
+									global.getGstrcfgpath(), 
+									global.getGstrcfgname()
+							).toString()
+						)
+			);
 			properties.setProperty("spring.datasource.url",ini.get("Database", "url"));
 			properties.setProperty("spring.datasource.username",ini.get("Database","username"));
 			properties.setProperty("spring.datasource.password",ini.get("Database","password"));
@@ -114,12 +122,18 @@ public class cfgInputOutput {
 			properties.setProperty("logging.level.org.springframework.web",ini.get("Server","logLevel"));
 			properties.setProperty("logging.level.org.hibernate",ini.get("Server","logLevel"));
 			properties.setProperty("spring.jpa.show-sql",ini.get("Server","showSQLQueries"));
+			properties.setProperty("spring.datasource.hikari.connectionTimeout","30000");
+			properties.setProperty("spring.datasource.hikari.idleTimeout","600000");
+			properties.setProperty("spring.datasource.hikari.maxLifetime","1800000");
+			
+			//podman
+			properties.setProperty("server.address","0.0.0.0");
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			System.out.println("configuration/vsystem.ini not found or incomplete.");
-			String strPath = Paths.get(System.getProperty("user.dir"),"configuration").toString();
-			String strFileName = "vsystem.ini";
+			String strPath = global.getGstrcfgpath();
+			String strFileName = global.getGstrcfgname();
 			createFile(strPath,strFileName);
 			blankIni(strPath,strFileName);
 			exitApp();
@@ -152,6 +166,52 @@ public class cfgInputOutput {
 		}
 		return false;
 	}
+	
+	public static boolean removeUserFile(String username, String strCfgPath, String strFileName) {
+		String filePath = Paths.get(strCfgPath, strFileName).toString();
+		File flOrig = new File(filePath);
+		File flTmp = new File(filePath+".tmp");
+		boolean bolUserFound = false;
+		try {
+			BufferedReader readOrig = new BufferedReader(new FileReader(flOrig));
+			ArrayList<String> lines = new ArrayList<>();
+			String line;
+			
+			while((line = readOrig.readLine()) != null) {
+				if (!line.split(";")[0].equals(username)) {
+					
+					lines.add(line);
+				}else {
+					bolUserFound = true;
+				}
+			}
+			readOrig.close();
+			BufferedWriter writeTemp = new BufferedWriter(new FileWriter(flTmp));
+			for(String l: lines)
+			{
+				writeTemp.write(l);
+				writeTemp.newLine();
+			}
+			writeTemp.close();
+			if(flOrig.delete())
+			{
+				flTmp.renameTo(flOrig);
+			}else {
+				System.out.println("fehler");
+			}
+			for (String strForLoop : lines) {
+				System.out.println(
+						strForLoop+"; "
+				);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return bolUserFound;
+	}
+	
 	public static boolean existsUserFile(String username, String password, String strCfgPath, String strFileName) {
 		String strFilePath = Paths.get(strCfgPath, strFileName).toString(); 
 		try {
@@ -203,7 +263,7 @@ public class cfgInputOutput {
 	public static void logRequests(
 			HttpServletRequest request,
 			Authentication authentication
-			) throws ServletException, IOException {
+	) throws ServletException, IOException {
 		String strMMethod = request.getMethod();
 		String strMUri = request.getRequestURI();
 		String strMQuery = request.getQueryString();
