@@ -20,7 +20,8 @@ public class RequestResponseLogger extends OncePerRequestFilter {
 
 
 	
-	/*@Bean
+	/*nur bei erfolgreichen
+	@Bean
 	public CommonsRequestLoggingFilter requestLoggingFilter() {
 	    CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
 	    loggingFilter.setIncludeClientInfo(true);

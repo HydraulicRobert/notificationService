@@ -73,8 +73,8 @@ public class websecurityConfig {
 	@Bean
 	public UserDetailsService users() {
 		cfgInputOutput chkIOUser = new cfgInputOutput();
-		String strCfgPath = Paths.get(System.getProperty("user.dir"),"configuration").toString();
-		String strFileName = "userlist.csv";
+		String strCfgPath = global.getGstrcfgpath();
+		String strFileName = global.getGstruserlist();
 		List<String[]> userListString = cfgInputOutput.getUserList(strCfgPath,strFileName);
 		UserBuilder users = User.builder();
 		List<UserDetails> userList = new ArrayList<>();
