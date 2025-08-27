@@ -1,7 +1,6 @@
 package com.proxy.notifications.configuration;
 
 import java.nio.file.Paths;
-
 public class global {
 	//files
 	private static final String gStrCfgPath 	= Paths.get(System.getProperty("user.dir"),"configuration").toString();
@@ -13,16 +12,79 @@ public class global {
 			"SELECT * from settings where last_Change_By like 'kevin'";
 	//variable contents
 	//main
-	private static final String[] gStrNotAddUser 			= {"-a","--add","if not exists add a user. -a username password","3"};
-	private static final String[] gStrNotShowUser 			= {"-s","--show","print a list of every user","1"};
-	private static final String[] gStrNotRemoveUser 		= {"-r","--remove","if a user exists remove from list","2"};
-	private static final String[] gStrNotConfigure 			= {"-c","--configuration","configure the ini","1"};
-	private static final String[] gStrNotHelp 				= {"-h","--help","show commands","1"};
+	private static final String[] gStrNotAddUser 		= {"-a","--add","if not exists add a user. -a username password","3"};
+	private static final String[] gStrNotShowUser 		= {"-s","--show","print a list of every user","1"};
+	private static final String[] gStrNotRemoveUser 	= {"-r","--remove","if a user exists remove from list","2"};
+	private static final String[] gStrNotConfigure 		= {"-c","--configuration","configure the ini","1"};
+	private static final String[] gStrNotHelp 			= {"-h","--help","show commands","1"};
 	private static final String gStrNotFlddUserfileCreate 	= "userlist not created";
 	private static final String gStrNotUserfileCreate 		= "userlist created";
 	private static final String gStrNotShowUsersName 		= "user: ";
 	private static final String gStrNotShowUsersPassword	= "; password: ";
-	private static final String gStrNotArgumentsAmount		= "arguments required: ";
+	private static final String gStrNotArgumentsAmount	= "arguments required: ";
+	//cfg
+	private static final String gStrCfgDirNotFound 		= "directory configuration doesn't exist. creating";
+	private static final String gStrCfgDirCreated 		= "directory configuration doesn't exist. creating";
+	private static final String gStrCfgDirNotCreated 	= "directory configuration doesn't exist. creating";
+	private static final String gStrCfgDirExists 		= "directory exists.";
+	private static final String gStrCfgCfgExists 		= "Configuration file exists.";
+	private static final String gStrCfgCfgNotExists 	= "Configuration file does not exist.";
+	private static final String gStrCfgCfgCreated 		= "Configuration created";
+	private static final String gStrCfgCfgCouldNotCreate= "Configuration could not be created";
+	private static final String gStrCfgCfgWriteToEmpty	= "Writing empty stuff to ini if empty";
+	private static final String gStrCfgCfgEmptyAddValues= "'$s1' is empty and requires values";
+	private static final String gStrCfgCfgInvalidFormat	= "invalid file format";
+	private static final String gStrCfgCfgNotFound		= "file at '$s1' not found or incomplete";
+	private static final String gStrCfgUserAdded		= "user '$s1' has been added";
+	private static final String gStrCfgUserNotAdded		= "user '$s1' has not been added";
+	private static final String gStrCfgUserAddedError	= "error on adding";
+	private static final String gStrCfgError			= "error";
+	private static final String gStrCfgUserDeleted		= "user '$s1' has been deleted";
+	private static final String gStrCfgUserNotDeleted	= "user '$s1' has not been deleted";
+	private static final String gStrCfgUserExists		= "user '$s1' exists";
+	private static final String gStrCfgAuthenticated	= "authenticated";
+	private static final String gStrCfgNotAuthenticated	= "not authenticated";
+	private static final String gStrCfgAuthNameUnknown	= "not authenticated";
+	
+	public static String getGstrcfgauthnameunknown() {
+		return gStrCfgAuthNameUnknown;
+	}
+	public static String getGstrcfgauthenticated() {
+		return gStrCfgAuthenticated;
+	}
+	public static String getGstrcfgnotauthenticated() {
+		return gStrCfgNotAuthenticated;
+	}
+	public static String getGstrcfguserexists() {
+		return gStrCfgUserExists;
+	}
+	public static String getGstrcfguserdeleted() {
+		return gStrCfgUserDeleted;
+	}
+	public static String getGstrcfgusernotdeleted() {
+		return gStrCfgUserNotDeleted;
+	}
+	public static String getGstrcfgerror() {
+		return gStrCfgError;
+	}
+	public static String getGstrcfguseraddederror() {
+		return gStrCfgUserAddedError;
+	}
+	public static String getGstrcfguseradded() {
+		return gStrCfgUserAdded;
+	}
+	public static String getGstrcfgusernotadded() {
+		return gStrCfgUserNotAdded;
+	}
+	public static String getGstrcfgcfgnotfound() {
+		return gStrCfgCfgNotFound;
+	}
+	public static String getGstrcfgcfginvalidformat() {
+		return gStrCfgCfgInvalidFormat;
+	}
+	public static String getGstrcfgcfgwritetoempty() {
+		return gStrCfgCfgWriteToEmpty;
+	}
 	public static String getGstrcfgpath() {
 		return gStrCfgPath;
 	}
@@ -64,6 +126,33 @@ public class global {
 	}
 	public static String getGstrnotargumentsamount() {
 		return gStrNotArgumentsAmount;
+	}
+	public static String getGstrcfgdirnotfound() {
+		return gStrCfgDirNotFound;
+	}
+	public static String getGstrcfgdircreated() {
+		return gStrCfgDirCreated;
+	}
+	public static String getGstrcfgdirnotcreated() {
+		return gStrCfgDirNotCreated;
+	}
+	public static String getGstrcfgdirexists() {
+		return gStrCfgDirExists;
+	}
+	public static String getGstrcfgcfgexists() {
+		return gStrCfgCfgExists;
+	}
+	public static String getGstrcfgcfgnotexists() {
+		return gStrCfgCfgNotExists;
+	}
+	public static String getGstrcfgcfgcreated() {
+		return gStrCfgCfgCreated;
+	}
+	public static String getGstrcfgcfgcouldnotcreate() {
+		return gStrCfgCfgCouldNotCreate;
+	}
+	public static String getGstrcfgcfgemptyaddvalues() {
+		return gStrCfgCfgEmptyAddValues;
 	}
 	
 }

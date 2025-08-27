@@ -14,7 +14,62 @@ public class startArgs {
 	    stlArgsList.add(global.getGstrnotconfigure());
 	    stlArgsList.add(global.getGstrnothelp());
 	}
-	public boolean addUser(String[] args)
+	
+	public void pickStartArgs(String[] args)
+	{
+		
+			//add
+			if (args[0].trim().equals(stlArgsList.get(0)[0]) ||
+				args[0].trim().equals(stlArgsList.get(0)[1]) )
+			{
+				if (!(args.length<Integer.valueOf(stlArgsList.get(0)[3])))
+				{
+					addUser(args);
+				}else
+				{
+					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(0)[3]);
+				}
+			}else 
+			//remove
+			if (args[0].trim().equals(stlArgsList.get(1)[0]) ||
+					args[0].trim().equals(stlArgsList.get(1)[1]) )
+			{
+				if (!(args.length<Integer.valueOf(stlArgsList.get(1)[3])))
+				{
+					removeUser(args);
+				}else
+				{
+					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(1)[3]);
+				}
+			}else 
+			//show
+			if (args[0].trim().equals(stlArgsList.get(2)[0]) ||
+				args[0].trim().equals(stlArgsList.get(2)[1]) )
+			{
+				if (!(args.length<Integer.valueOf(stlArgsList.get(2)[3])))
+				{
+					showUsers(args);
+				}else
+				{
+					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(2)[3]);
+				}
+			}else
+				
+			//help
+			if (args[0].trim().equals(stlArgsList.get(4)[0]) ||
+					args[0].trim().equals(stlArgsList.get(4)[1]) )
+			{
+				if (!(args.length<Integer.valueOf(stlArgsList.get(4)[3])))
+				{
+					help(args, stlArgsList);
+				}else
+				{
+					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(4)[3]);
+				}
+			}
+	}
+	
+	private boolean addUser(String[] args)
 	{
 		boolean userCreated = false;
 		String strCfgPath = global.getGstrcfgpath();
@@ -29,7 +84,7 @@ public class startArgs {
 		userCreated = true;
 		return userCreated;
 	}
-	public boolean removeUser(String[] args)
+	private boolean removeUser(String[] args)
 	{
 		if(cfgInputOutput.removeUserFile(args[1], global.getGstrcfgpath(), global.getGstruserlist()))
 		{
@@ -40,14 +95,14 @@ public class startArgs {
 		}
 		
 	}
-	public void showUsers(String[] args)
+	private void showUsers(String[] args)
 	{
 		List<String[]> userList = cfgInputOutput.getUserList(global.getGstrcfgpath(), global.getGstruserlist());
 		for (int i = 0; i<userList.size();i++) {
 			System.out.println(global.getGstrnotshowusersname()+userList.get(i)[0]+global.getGstrnotshowuserspassword()+userList.get(i)[1]+"';");
 		}
 	}
-	public void help(String[] args, List<String[]> stlArgsList)
+	private void help(String[] args, List<String[]> stlArgsList)
 	{
 		for (String[] strArrForLoop : stlArgsList) {
 			for (String strForLoop : strArrForLoop) {

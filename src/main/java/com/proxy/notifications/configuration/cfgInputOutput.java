@@ -35,29 +35,29 @@ public class cfgInputOutput {
 		String strUserListPath = strFilename;
 		File checkExists = new File(strCfgPath);
 		if (!(checkExists.exists() && checkExists.isDirectory())) {
-			System.out.println("directory configuration doesn't exist. creating");
+			System.out.println(global.getGstrcfgdirnotfound());
 			try {
 				Files.createDirectories(Paths.get(strCfgPath));
-				System.out.println("directory created");
+				System.out.println(global.getGstrcfgdircreated());
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-				System.out.println("couldn't create directory");
+				System.out.println(global.getGstrcfgdirnotcreated());
 				return false;
 			}
 		}else {
-			System.out.println("Directory exists");
+			System.out.println(global.getGstrcfgdirexists());
 		}
 		checkExists = new File(Paths.get(strCfgPath,strUserListPath).toString());
 		if (!checkExists.exists()) {
 			try {
-				System.out.println("configuration file doesn't exist. creating");
+				System.out.println(global.getGstrcfgcfgnotexists());
 				Files.createFile(Paths.get(strCfgPath,strUserListPath));
-				System.out.println("file created");
+				System.out.println(global.getGstrcfgcfgcreated());
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-				System.out.println("couldn't create ini file");
+				System.out.println(global.getGstrcfgcfgcouldnotcreate());
 				return false;
 			}
 		}
@@ -68,7 +68,7 @@ public class cfgInputOutput {
 		String strFileName = strFilename;
 		String strFilePath = Paths.get(strDirPath, strFileName).toString();
 		try {
-			System.out.println("Writing empty stuff to ini if empty");
+			System.out.println(global.getGstrcfgcfgwritetoempty());
 			Ini ini = new Ini(new File( strFilePath));
 			ini.put("Database", "url","");
 			ini.put("Database", "username","");
@@ -84,14 +84,27 @@ public class cfgInputOutput {
 			return true;
 		} catch (NullPointerException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("file at '"+strFilePath+"' is empty. add values");
+			System.out.println(global.getGstrcfgcfgemptyaddvalues()
+											.replace(
+													"$s1", 
+													strFilePath
+													)
+											);
 			return false;
 		} catch(InvalidFileFormatException e1) {
-			System.out.println("invalid file format");
+			System.out.println(global.getGstrcfgcfginvalidformat());
 			return false;
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("file at '"+strFilePath+"' not found");
+			System.out.println(global.getGstrcfgcfgnotfound()
+								.replace(
+										"$s1", 
+										Paths.get(
+												global.getGstrcfgpath(),
+												global.getGstrcfgname()
+												).toString()
+										)
+					);
 			return false;
 		}
 	}
@@ -131,7 +144,15 @@ public class cfgInputOutput {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("configuration/vsystem.ini not found or incomplete.");
+			System.out.println(global.getGstrcfgcfgnotfound()
+											.replace(
+													"$s1", 
+													Paths.get(
+															global.getGstrcfgpath(),
+															global.getGstrcfgname()
+															).toString()
+													)
+											);
 			String strPath = global.getGstrcfgpath();
 			String strFileName = global.getGstrcfgname();
 			createFile(strPath,strFileName);
@@ -153,16 +174,26 @@ public class cfgInputOutput {
 			    bw.write(username+";"+BCrypt.hashpw(password,BCrypt.gensalt(12)));
 			    bw.newLine();
 			    bw.close();
-			    System.out.println("user added");
+			    System.out.println(global.getGstrcfguseradded()
+			    							.replace(
+			    									"$s1", 
+			    									username
+			    									)
+			    							);
 			    return true;
 			}else {
 
-			    System.out.println("user not added");
+			    System.out.println(global.getGstrcfgusernotadded()
+						.replace(
+								"$s1", 
+								username
+								)
+						);
 			    return false;
 			}
 		}catch(IOException E) {
 
-			System.out.println("error adding.");
+			System.out.println(global.getGstrcfguseraddederror());
 		}
 		return false;
 	}
@@ -183,6 +214,7 @@ public class cfgInputOutput {
 					lines.add(line);
 				}else {
 					bolUserFound = true;
+					
 				}
 			}
 			readOrig.close();
@@ -197,13 +229,30 @@ public class cfgInputOutput {
 			{
 				flTmp.renameTo(flOrig);
 			}else {
-				System.out.println("fehler");
+				System.out.println(global.getGstrcfgerror());
 			}
-			for (String strForLoop : lines) {
+			if(bolUserFound)
+			{
+				System.out.println(global.getGstrcfguserdeleted()
+						.replace(
+								"$s1", 
+								username
+								)
+						);
+			}else
+			{
+				System.out.println(global.getGstrcfgusernotdeleted()
+						.replace(
+								"$s1", 
+								username
+								)
+						);
+			}
+			/*for (String strForLoop : lines) {
 				System.out.println(
 						strForLoop+"; "
 				);
-			}
+			}*/
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -223,7 +272,12 @@ public class cfgInputOutput {
 				userList = line.split(";");
 				if (userList[0].trim().equals(username))
 				{
-					System.out.println("user exists");
+					System.out.println(global.getGstrcfguserexists()
+							.replace(
+									"$s1", 
+									username
+									)
+							);
 					return true;
 				}
 			}
@@ -267,9 +321,9 @@ public class cfgInputOutput {
 		String strMMethod = request.getMethod();
 		String strMUri = request.getRequestURI();
 		String strMQuery = request.getQueryString();
-		String strMName = !authentication.getName().isEmpty() ? authentication.getName():"unknown";
+		String strMName = !authentication.getName().isEmpty() ? authentication.getName():global.getGstrcfgauthnameunknown();
 		String strMIp = request.getRemoteAddr();
-		String strMAuthenticated = authentication.isAuthenticated()?"authenticated":"unauthenticated";
+		String strMAuthenticated = authentication.isAuthenticated()?global.getGstrcfgauthenticated():global.getGstrcfgnotauthenticated();
 		DateTimeFormatter datetimeFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		System.out.println(LocalDateTime.now().format(datetimeFormat)+";"+strMIp+";"+strMMethod+";"+strMUri+";"+strMName+";"+strMAuthenticated);
 	}

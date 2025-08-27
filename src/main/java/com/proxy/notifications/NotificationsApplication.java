@@ -27,7 +27,7 @@ public class NotificationsApplication {
 		String strCfgPath = global.getGstrcfgpath();
 		String strFileName = global.getGstruserlist();
 		startArgs strtArgs = new startArgs();
-        List<String[]> stlArgsList = strtArgs.getStlArgsList();
+       // List<String[]> stlArgsList = strtArgs.getStlArgsList();
 		cfgInputOutput.createFile(strCfgPath, strFileName);
 		if (args.length <= 0) {
 			new SpringApplicationBuilder(NotificationsApplication.class)
@@ -35,57 +35,12 @@ public class NotificationsApplication {
 	        .web(WebApplicationType.SERVLET)
 	        .build()
 	        .run(args);
-		}else
+		}else {
+			strtArgs.pickStartArgs(args);
+		}
 		
 		//add
-		if (args[0].trim().equals(stlArgsList.get(0)[0]) ||
-			args[0].trim().equals(stlArgsList.get(0)[1]) )
-		{
-			if (!(args.length<Integer.valueOf(stlArgsList.get(0)[3])))
-			{
-				strtArgs.addUser(args);
-			}else
-			{
-				System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(0)[3]);
-			}
-		}else 
-		//remove
-		if (args[0].trim().equals(stlArgsList.get(1)[0]) ||
-				args[0].trim().equals(stlArgsList.get(1)[1]) )
-		{
-			if (!(args.length<Integer.valueOf(stlArgsList.get(1)[3])))
-			{
-				strtArgs.removeUser(args);
-			}else
-			{
-				System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(1)[3]);
-			}
-		}else 
-			//show
-			if (args[0].trim().equals(stlArgsList.get(2)[0]) ||
-				args[0].trim().equals(stlArgsList.get(2)[1]) )
-			{
-				if (!(args.length<Integer.valueOf(stlArgsList.get(2)[3])))
-				{
-					strtArgs.showUsers(args);
-				}else
-				{
-					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(2)[3]);
-				}
-			}else
-			
-		//help
-		if (args[0].trim().equals(stlArgsList.get(4)[0]) ||
-				args[0].trim().equals(stlArgsList.get(4)[1]) )
-		{
-			if (!(args.length<Integer.valueOf(stlArgsList.get(4)[3])))
-			{
-				strtArgs.help(args, stlArgsList);
-			}else
-			{
-				System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(4)[3]);
-			}
-		}
+		
 			
 		
 	}
