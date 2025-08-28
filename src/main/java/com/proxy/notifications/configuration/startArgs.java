@@ -54,7 +54,12 @@ public class startArgs {
 					System.out.println(global.getGstrnotargumentsamount()+stlArgsList.get(2)[3]);
 				}
 			}else
-				
+			//config
+			if (args[0].trim().equals(stlArgsList.get(3)[0]) ||
+				args[0].trim().equals(stlArgsList.get(3)[1]) )
+			{
+				config();
+			}else	
 			//help
 			if (args[0].trim().equals(stlArgsList.get(4)[0]) ||
 					args[0].trim().equals(stlArgsList.get(4)[1]) )
@@ -94,6 +99,10 @@ public class startArgs {
 			return false;
 		}
 		
+	}
+	private void config()
+	{
+		cfgInputOutput.fillIni(global.getGstrcfgpath(), global.getGstrcfgname());
 	}
 	private void showUsers(String[] args)
 	{

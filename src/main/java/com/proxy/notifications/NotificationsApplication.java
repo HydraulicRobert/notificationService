@@ -26,15 +26,27 @@ public class NotificationsApplication {
 		//cfgInputOutput CfgInputOutput = new cfgInputOutput();
 		String strCfgPath = global.getGstrcfgpath();
 		String strFileName = global.getGstruserlist();
+		String strCfgName = global.getGstrcfgname();
 		startArgs strtArgs = new startArgs();
        // List<String[]> stlArgsList = strtArgs.getStlArgsList();
 		cfgInputOutput.createFile(strCfgPath, strFileName);
 		if (args.length <= 0) {
-			new SpringApplicationBuilder(NotificationsApplication.class)
-	        .properties(cfgInputOutput.props())
-	        .web(WebApplicationType.SERVLET)
-	        .build()
-	        .run(args);
+			try {
+				new SpringApplicationBuilder(NotificationsApplication.class)
+		        .properties(cfgInputOutput.props())
+		        .web(WebApplicationType.SERVLET)
+		        .build()
+		        .run(args);
+			}catch(Exception e)
+			{
+				int i = 0;
+				System.out.println("change config. startargument -c");
+				while(i == 0) {
+					
+				}
+				//cfgInputOutput.blankIni(strCfgPath, strCfgName);
+				//cfgInputOutput.fillIni(global.getGstrcfgpath(), global.getGstrcfgname());
+			}
 		}else {
 			strtArgs.pickStartArgs(args);
 		}

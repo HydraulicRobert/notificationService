@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 
 import org.ini4j.Ini;
 import org.ini4j.InvalidFileFormatException;
@@ -78,7 +79,9 @@ public class cfgInputOutput {
 			ini.put("Database", "show-sql","");
 			ini.put("Database", "ddl-auto","");
 			ini.put("Server", "port","");
-			ini.put("Server", "logLevel","");
+			ini.put("Server", "logLevelRoot","");
+			ini.put("Server", "logLevelSpring","");
+			ini.put("Server", "logLevelHibernate","");
 			ini.put("Server", "showSQLQueries","");
 			ini.store();
 			return true;
@@ -108,6 +111,55 @@ public class cfgInputOutput {
 			return false;
 		}
 	}
+	
+	public static void fillIni(String strPath, String strFilename) {
+		List<String[]> stlArgsList = new ArrayList<String[]>();
+		
+		Ini ini;
+		try {
+			String strDirPath = strPath;
+			String strFileName = strFilename;
+			String strFilePath = Paths.get(strDirPath, strFileName).toString();
+			Scanner scnUserInput = new Scanner(System.in);
+			String strUserInput = "";
+			ini = new Ini(new File( strFilePath));
+			stlArgsList.add(new String[] {"Database",	"url",				"sql ip address",								"jdbc:sqlserver://192.168.0.x:8080;databaseName=myDatabase;trustServerCertificate=true",ini.get("Database","url")});
+			stlArgsList.add(new String[] {"Database",	"username",			"username to log into the database server",		"ADMIN",ini.get("Database","username")});
+			stlArgsList.add(new String[] {"Database",	"password",			"password to log into the database server",		"***",ini.get("Database","password")});
+			stlArgsList.add(new String[] {"Database",	"driverClassName",	"driver to be used",							"com.microsoft.sqlserver.jdbc.SQLServerDriver",ini.get("Database","driverClassName")});
+			stlArgsList.add(new String[] {"Database",	"dialect",			"component for converting database objects into hibernate objects", "org.hibernate.dialect.SQLServer2012Dialect",ini.get("Database","dialect")});
+			stlArgsList.add(new String[] {"Database",	"show-sql",			"show sql queries in console",					"\n'true' = show; \n'false' = dont show;",ini.get("Database","show-sql")});
+			stlArgsList.add(new String[] {"Database",	"ddl-auto",			"how hibernate manages the tables etc.",		"'none' = no database changes; \n'validate' = check if database shema matches hibernate. if not, change nothing; \n'update' = automatically change database shema to hibernate; \n'create' = drop previous and create new on app start; \n'create-drop' = same as create, but drops at shutdown",ini.get("Database","ddl-auto")});
+			stlArgsList.add(new String[] {"Server",		"port",				"port for server to be accessed from",			"80",ini.get("Server","port")});
+			stlArgsList.add(new String[] {"Server",		"logLevelRoot",		"global logging level",							"'OFF' = none; \n'FATAL' = only fatal; \n'ERROR' = only error; \n'WARN' = only warnings; \n'INFO' = only information messages; \n'DEBUG' = detailled debug messages; \n'TRACE' = detailled general informations; \n'ALL' = everything",ini.get("Server","logLevelRoot")});
+			stlArgsList.add(new String[] {"Server",		"logLevelSpring",	"spring web related logging level",				"'OFF' = none; \n'FATAL' = only fatal; \n'ERROR' = only error; \n'WARN' = only warnings; \n'INFO' = only information messages; \n'DEBUG' = detailled debug messages; \n'TRACE' = detailled general informations; \n'ALL' = everything",ini.get("Server","logLevelSpring")});
+			stlArgsList.add(new String[] {"Server",		"logLevelHibernate","Hibernate related logging level",				"'OFF' = none; \n'FATAL' = only fatal; \n'ERROR' = only error; \n'WARN' = only warnings; \n'INFO' = only information messages; \n'DEBUG' = detailled debug messages; \n'TRACE' = detailled general informations; \n'ALL' = everything",ini.get("Server","logLevelHibernate")});			
+			for(int i = 0; i<stlArgsList.size();i++)
+			{
+				String[] stlLine = stlArgsList.get(i);
+				System.out.println("category: "+stlLine[0]);
+				System.out.println("\nobject: "+stlLine[1]);
+				System.out.println("\ndescription: \n"+stlLine[2]);
+				System.out.println("\nexample: "+stlLine[3]);
+				System.out.println("\ncurrently: "+stlLine[4]);
+				System.out.println("\n\nkeep empty to keep value. else type something in");
+				strUserInput = "";
+				System.out.print("input: ");
+				strUserInput = scnUserInput.nextLine();
+				var res = strUserInput.isEmpty()?
+						ini.put(stlLine[0], stlLine[1],stlLine[4]):
+						ini.put(stlLine[0], stlLine[1],strUserInput);
+			}
+			ini.put("Server", "showSQLQueries",Boolean.valueOf(stlArgsList.get(10)[4]));
+			ini.store();
+			scnUserInput.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
+	}
+	
 	public static void exitApp() {
 		System.out.println("closing app");
 		System.exit(0);
@@ -131,9 +183,9 @@ public class cfgInputOutput {
 			properties.setProperty("spring.jpa.show-sql",ini.get("Database","show-sql"));
 			properties.setProperty("spring.jpa.hibernate.ddl-auto",ini.get("Database","ddl-auto"));
 			properties.setProperty("server.port",ini.get("Server","port"));
-			properties.setProperty("logging.level.root",ini.get("Server","logLevel"));
-			properties.setProperty("logging.level.org.springframework.web",ini.get("Server","logLevel"));
-			properties.setProperty("logging.level.org.hibernate",ini.get("Server","logLevel"));
+			properties.setProperty("logging.level.root",ini.get("Server","logLevelRoot"));
+			properties.setProperty("logging.level.org.springframework.web",ini.get("Server","logLevelSpring"));
+			properties.setProperty("logging.level.org.hibernate",ini.get("Server","logLevelHibernate"));
 			properties.setProperty("spring.jpa.show-sql",ini.get("Server","showSQLQueries"));
 			properties.setProperty("spring.datasource.hikari.connectionTimeout","30000");
 			properties.setProperty("spring.datasource.hikari.idleTimeout","600000");
