@@ -103,8 +103,8 @@ public class cfgInputOutput {
 								.replace(
 										"$s1", 
 										Paths.get(
-												global.getGstrcfgpath(),
-												global.getGstrcfgname()
+												strPath,
+												strFilename
 												).toString()
 										)
 					);
@@ -164,14 +164,14 @@ public class cfgInputOutput {
 		System.out.println("closing app");
 		System.exit(0);
 	}
-	public static Properties props() {
+	public static Properties props(String path, String iniName) {
 	    Properties properties = new Properties();
 		try {
 			Ini ini = new Ini(
 						new File(
 							Paths.get(
-									global.getGstrcfgpath(), 
-									global.getGstrcfgname()
+									path, 
+									iniName
 							).toString()
 						)
 			);

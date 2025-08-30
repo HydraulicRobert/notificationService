@@ -33,7 +33,10 @@ public class NotificationsApplication {
 		if (args.length <= 0) {
 			try {
 				new SpringApplicationBuilder(NotificationsApplication.class)
-		        .properties(cfgInputOutput.props())
+		        .properties(cfgInputOutput.props(
+		        		global.getGstrcfgpath(), 
+						global.getGstrcfgname()
+						))
 		        .web(WebApplicationType.SERVLET)
 		        .build()
 		        .run(args);
