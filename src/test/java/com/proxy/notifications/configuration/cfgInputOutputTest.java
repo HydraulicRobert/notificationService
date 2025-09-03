@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,18 +30,20 @@ class cfgInputOutputTest {
 	void setUp() throws Exception {
 		tstCfg = new cfgInputOutput();
 		try {
-			Files.deleteIfExists(fileUser);
-			Files.deleteIfExists(fileTxt);
-			Files.deleteIfExists(fileIni);
+			
+			Files.delete(fileUser);
+			Files.delete(fileTxt);
+			Files.delete(fileIni);
 		} catch (IOException e) {
 		}
 	}
 	@AfterEach
-	void destroy() throws Exception{
+	void setDown() throws Exception{
 		try {
-			Files.deleteIfExists(fileUser);
-			Files.deleteIfExists(fileTxt);
-			Files.deleteIfExists(fileIni);
+			Files.delete(fileUser);
+			Files.delete(fileTxt);
+			Files.delete(fileIni);
+			FileUtils.deleteDirectory(new File(tstFolder.toString()));
 		} catch (IOException e) {
 		}
 	}
