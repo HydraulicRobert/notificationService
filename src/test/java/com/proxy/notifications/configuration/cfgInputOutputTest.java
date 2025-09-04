@@ -117,9 +117,5 @@ class cfgInputOutputTest {
 		//fail("Not yet implemented");
 	}
 
-	@Test
-	void testLogRequests() {
-		fail("interface später");
-	}
 
 }
