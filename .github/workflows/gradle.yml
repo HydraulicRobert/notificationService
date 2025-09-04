@@ -1,6 +1,6 @@
 name: gradleBuild
     on: 
-        push:
+        push
         
     jobs: 
         build:
