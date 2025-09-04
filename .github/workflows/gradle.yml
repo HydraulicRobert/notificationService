@@ -13,4 +13,4 @@ jobs:
             - name: Gradle berechtigungen
               run: chmod +x ./gradlew
             - name: Build with Gradle
-              run: ./gradlew build
+              run: gradle build
