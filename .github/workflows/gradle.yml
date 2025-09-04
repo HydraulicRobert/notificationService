@@ -1,5 +1,7 @@
-name: gradleBuild
-    on: push
+name: Build
+
+on:
+  push:
     jobs: 
         build:
             name: build and test
