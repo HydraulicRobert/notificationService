@@ -1,12 +1,13 @@
-name: Build
-run-name: ${{ github.actor}}
-on: [push]
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
 jobs: 
     build:
         runs-on: ubuntu-latest
         steps:
-            - name: 'checkout'
-             uses: actions/checkout@v4
+            - uses: actions/checkout@v4
             - name: 'Set up JDK 17'
               uses: actions/setup-java@v4
               with:
