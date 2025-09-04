@@ -19,6 +19,8 @@ jobs:
               uses: gradle/actions/setup-gradle@v4
               with: 
                 cache-disabled: true
+            - name: verify java
+              run: java -version
             - name: 'Gradle berechtigungen'
               run: chmod +x ./gradlew
             - name: 'Build with Gradle'
