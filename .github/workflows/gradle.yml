@@ -16,8 +16,13 @@ jobs:
                 java-version: '17'
                 distribution: 'temurin'
             - name: Setup Gradle
-              uses: gradle/gradle-build-action@v2
+              uses: gradle/gradle-build-action@v3
             - name: 'Gradle berechtigungen'
               run: chmod +x ./gradlew
             - name: 'Build with Gradle'
               run: ./gradlew build --no-daemon --stacktrace
+            - name: build artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                name: Build-Artifacts
+                path: build/libs/
