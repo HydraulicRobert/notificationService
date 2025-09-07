@@ -5,12 +5,14 @@ on:
     workflows: ["Java CI with Gradle"]
     types:
       - completed
+
+permissions: 
+      contents: write
+      
 jobs:
   build:
     name: dependencies
     runs-on: ubuntu-latest
-    permissions: 
-      contents: write
     steps:
       - name: Checkout
        uses: actions/checkout@v4
