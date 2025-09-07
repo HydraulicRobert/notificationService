@@ -22,7 +22,7 @@ jobs:
           - name: remove docker config
             run: |
                 docker logout
-                rm -rf ~/.docker/config.json
+                rm -rf ~/.docker/config.json 
           - name: login docker
             uses: docker/login-action@v3
             with:
