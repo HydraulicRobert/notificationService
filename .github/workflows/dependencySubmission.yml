@@ -8,7 +8,7 @@ on:
     types:
       - completed 
 jobs: 
-    build-and-test:
+    dependency-submission:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
