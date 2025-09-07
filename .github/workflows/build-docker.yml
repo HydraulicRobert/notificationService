@@ -22,6 +22,10 @@ jobs:
             with:
                 username: ${{ secrets.DOCKER_USERNAME }}
                 password: ${{ secrets.DOCKER_PASSWORD }}
+          - name: print
+            shell: bash
+            run: |
+                echo ${{ secrets.DOCKER_USERNAME }}
                 
           - name: set up QEMU
             uses: docker/setup-qemu-action@v3
