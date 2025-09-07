@@ -1,0 +1,22 @@
+name: Java dependency sumission
+run-name: Deploy by @${{ github.actor }}
+on:
+  workflow_run:
+    workflows: ["Java CI with Gradle"]
+    types:
+      - completed
+jobs:
+  build:
+    name: dependencies
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run snapshot action
+        uses: mikepenz/gradle-dependency-submission@{latest}
+        with:
+          gradle-project-path: "gradle-example"
+          gradle-build-module: ":app"
