@@ -17,12 +17,6 @@ jobs:
             with:
                 distribution: 'temurin'
                 java-version: 17
-          - name: print
-            shell: bash
-            run: |
-                echo $GH_Name
-            env:
-                GH_Name: ${{ secrets.DOCKER_USERNAME }}
           - name: login docker
             uses: docker/login-action@v3
             with:
