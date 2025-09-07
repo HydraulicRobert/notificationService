@@ -2,7 +2,7 @@ name: Java ci build docker
 run-name: docker build @${{ github.actor }}
 on:
   workflow_run:
-    workflows: ["Java CI with Gradle"]
+    workflows: ["Java CI test and build with Gradle"]
     types:
       - completed 
 jobs: 
