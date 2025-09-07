@@ -11,7 +11,7 @@ jobs:
         env:
             ACTION_STEP_DEBUG: true
         steps:
-          - name: Checkout
+          - name: Checkout 
             uses: actions/checkout@v4
 
           - name: setup java
