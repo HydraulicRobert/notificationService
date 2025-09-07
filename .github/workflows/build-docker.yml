@@ -19,8 +19,8 @@ jobs:
             with:
                 distribution: 'temurin'
                 java-version: 17
-          - name: logout from docker
-            run: docker logout
+          - name: ping docker hub
+            run: curl -v https://registry-1.docker.io/v2
           - name: login docker
             uses: docker/login-action@v3
             with:
