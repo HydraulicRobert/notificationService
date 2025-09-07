@@ -11,13 +11,13 @@ jobs:
     dependency-submission:
         runs-on: ubuntu-latest
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+          - name: Checkout
+            uses: actions/checkout@v4
 
-           - name: setup java
-              uses: actions/setup-java@v4
-              with:
+          - name: setup java
+            uses: actions/setup-java@v4
+            with:
                 distribution: 'temurin'
                 java-version: 17
-                - name: create dependency graph
-                uses: gradle/actions/dependency-submission@v4
+          - name: create dependency graph
+            uses: gradle/actions/dependency-submission@v4
