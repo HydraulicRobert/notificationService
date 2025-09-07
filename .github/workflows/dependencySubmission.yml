@@ -1,25 +1,23 @@
+
+        
 name: Java dependency sumission
 run-name: Deploy by @${{ github.actor }}
 on:
   workflow_run:
     workflows: ["Java CI with Gradle"]
     types:
-      - completed
+      - completed 
+jobs: 
+    build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+                uses: actions/checkout@v4
 
-permissions: 
-      contents: write
-      
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-       uses: actions/checkout@v4
-
-       - name: setup java
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: 17
-        - name: create dependency graph
-        uses: gradle/actions/dependency-submission@v4
+           - name: setup java
+              uses: actions/setup-java@v4
+              with:
+                distribution: 'temurin'
+                java-version: 17
+                - name: create dependency graph
+                uses: gradle/actions/dependency-submission@v4
