@@ -1,6 +1,5 @@
-
-name: Java dependency sumission
-run-name: Deploy by @${{ github.actor }}
+name: Java ci dependency sumission
+run-name: dependency graph @${{ github.actor }}
 on:
   workflow_run:
     workflows: ["Java CI with Gradle"]

@@ -1,5 +1,5 @@
-name: Java CI with Gradle
-run-name: Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }}
+name: Java CI test and build with Gradle
+run-name: build and test by @${{ github.actor }}
 on:
   push:
     branches: 
