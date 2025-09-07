@@ -12,11 +12,13 @@ jobs:
     permissions: 
       contents: write
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
-      - name: Run snapshot action
-        uses: mikepenz/gradle-dependency-submission@{latest}
-        with:
-          gradle-project-path: "gradle-example"
-          gradle-build-module: ":app"
+       - name: setup java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: 17
+        - name: create dependency graph
+        uses: gradle/actions/dependency-submission@v4
