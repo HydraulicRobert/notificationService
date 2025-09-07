@@ -1,4 +1,3 @@
-
 name: Java ci build docker
 run-name: docker build @${{ github.actor }}
 on:
