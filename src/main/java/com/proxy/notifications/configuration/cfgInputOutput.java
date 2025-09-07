@@ -214,7 +214,7 @@ public class cfgInputOutput {
 			properties.setProperty("server.address","0.0.0.0");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch 
 			System.out.println(global.getGstrcfgcfgnotfound()
 											.replace(
 													"$s1", 
