@@ -70,7 +70,11 @@ public class cfgInputOutput {
 		String strFilePath = Paths.get(strDirPath, strFileName).toString();
 		try {
 			System.out.println(global.getGstrcfgcfgwritetoempty());
-			Ini ini = new Ini(new File( strFilePath));
+			Ini ini = new Ini(
+							new File( 
+									strFilePath
+									)
+							);
 			ini.put("Database", "url","");
 			ini.put("Database", "username","");
 			ini.put("Database", "password","");
@@ -175,14 +179,30 @@ public class cfgInputOutput {
 							).toString()
 						)
 			);
-			properties.setProperty("spring.datasource.url",ini.get("Database", "url"));
-			properties.setProperty("spring.datasource.username",ini.get("Database","username"));
-			properties.setProperty("spring.datasource.password",ini.get("Database","password"));
-			properties.setProperty("spring.datasource.driverClassName",ini.get("Database","driverClassName"));
-			properties.setProperty("spring.jpa.hibernate.dialect",ini.get("Database","dialect"));
-			properties.setProperty("spring.jpa.show-sql",ini.get("Database","show-sql"));
-			properties.setProperty("spring.jpa.hibernate.ddl-auto",ini.get("Database","ddl-auto"));
-			properties.setProperty("server.port",ini.get("Server","port"));
+			if(ini.get("Server", "test") == null)
+			{
+				System.out.println("normal database");
+				properties.setProperty("spring.datasource.url",ini.get("Database", "url"));
+				properties.setProperty("spring.datasource.username",ini.get("Database","username"));
+				properties.setProperty("spring.datasource.password",ini.get("Database","password"));
+				properties.setProperty("spring.datasource.driverClassName",ini.get("Database","driverClassName"));
+				properties.setProperty("spring.jpa.hibernate.dialect",ini.get("Database","dialect"));
+				properties.setProperty("spring.jpa.show-sql",ini.get("Database","show-sql"));
+				properties.setProperty("spring.jpa.hibernate.ddl-auto",ini.get("Database","ddl-auto"));
+				properties.setProperty("server.port",ini.get("Server","port"));
+			}
+			else
+			{
+				System.out.println("h2 database");
+				properties.setProperty("spring.datasource.url","jdbc:h2:mem:testdb");
+				properties.setProperty("spring.datasource.username","sa");
+				properties.setProperty("spring.datasource.password","");
+				properties.setProperty("spring.datasource.driverClassName","org.h2.driver");
+				properties.setProperty("spring.jpa.hibernate.dialect","org.hibernate.dialect.H2Dialect");
+				properties.setProperty("spring.jpa.show-sql","false");
+				properties.setProperty("spring.jpa.hibernate.ddl-auto","update");
+				properties.setProperty("server.port","80");
+			}
 			properties.setProperty("logging.level.root",ini.get("Server","logLevelRoot"));
 			properties.setProperty("logging.level.org.springframework.web",ini.get("Server","logLevelSpring"));
 			properties.setProperty("logging.level.org.hibernate",ini.get("Server","logLevelHibernate"));
@@ -190,11 +210,10 @@ public class cfgInputOutput {
 			properties.setProperty("spring.datasource.hikari.connectionTimeout","30000");
 			properties.setProperty("spring.datasource.hikari.idleTimeout","600000");
 			properties.setProperty("spring.datasource.hikari.maxLifetime","1800000");
-			
 			//podman
 			properties.setProperty("server.address","0.0.0.0");
-			
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			// TODO Auto-generated catch block
 			System.out.println(global.getGstrcfgcfgnotfound()
 											.replace(
